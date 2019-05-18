@@ -6,6 +6,8 @@ const utils = require('./utils');
 
 const db = require('./db');
 
+process.env.NTBA_FIX_319 = 1;
+
 var invalid_users = new Set();
 var Bot = module.exports = {}
 

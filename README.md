@@ -11,6 +11,7 @@ Currently we support the following websites:
 - [Codeforces](http://codeforces.com/)
 - [CS Academy](https://csacademy.com/)
 - [TopCoder](https://www.topcoder.com)
+- [Red de Programación Competitiva](http://redprogramacioncompetitiva.com/)
 
 You can choose which notifications you will receive by enabling/disabling each website. Use `/help` for more information.
 

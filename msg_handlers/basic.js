@@ -52,7 +52,7 @@ start_stop.init = function() {
 	});
 
 	Bot.bot.onText(/^\/help(@\w+)*$/m, (message) => {
-		Bot.sendSimplePlain(message.chat.id, "Hello, I am ContestWatcher Bot :D. I list programming contests from Codeforces, Topcoder, Codechef, CSAcademy and AtCoder.\n\n" +
+		Bot.sendSimplePlain(message.chat.id, "Hello, I am ContestWatcher Bot :D. I list programming contests from Codeforces, Topcoder, Codechef, AtCoder and RPC.\n\n" +
 			"You can control me by sending these commands: \n\n" +
 			"/start - start receiving reminders before the contests. I'll send a reminder 1 day and another 1 hour before each contest.\n" +
 			"/stop - stop receiving reminders.\n" +

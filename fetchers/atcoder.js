@@ -1,6 +1,5 @@
 const logger = require('../logger');
 const jsdom = require('jsdom')
-const EventEmitter = require('events');
 const moment = require('moment-timezone');
 
 function isNumeric(string) {
@@ -19,8 +18,8 @@ function valid(duration){
 
 module.exports = {
 	name: "atcoder",
-	updateUpcoming: (upcoming) => {
-		const emitter = new EventEmitter();
+	updateUpcoming: (fetchers_list_update_cb) => {
+		let upcoming = [];
 
 		jsdom.env("https://atcoder.jp/contests",
 			["http://code.jquery.com/jquery.js"],
@@ -69,9 +68,8 @@ module.exports = {
 						duration: duration[0] * 3600 + duration[1] * 60
 					});
 				});
-				emitter.emit('end');
-			});
 
-		return emitter;
+				fetchers_list_update_cb(upcoming);
+			});
 	}
 }

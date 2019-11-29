@@ -1,11 +1,10 @@
 const logger = require('../logger');
-const EventEmitter = require('events');
 const ical = require('ical');
 
 module.exports = {
 	name: "topcoder",
-	updateUpcoming: (upcoming) => {
-		const emitter = new EventEmitter();
+	updateUpcoming: (fetchers_list_update_cb) => {
+		let upcoming = [];
 
 		ical.fromURL(
 			'https://calendar.google.com/calendar/ical/appirio.com_bhga3musitat85mhdrng9035jg%40group.calendar.google.com/public/basic.ics', 
@@ -36,10 +35,8 @@ module.exports = {
 
 				upcoming.sort( (a, b) => { return a.time - b.time; });
 
-				emitter.emit('end');
+				fetchers_list_update_cb(upcoming);
 			}
 		);
-
-		return emitter;
 	}
 };

@@ -1,6 +1,5 @@
 "use strict";
 const logger = require('../logger');
-const EventEmitter = require('events');
 const schedule = require('node-schedule');
 const bot = require('../bot');
 const db = require('../db');
@@ -114,13 +113,13 @@ let prelim_contest_end = function(ev, contest_id) {
 
 module.exports = {
 	name: "codeforces",
-	updateUpcoming: (upcoming) => {
-		const emitter = new EventEmitter();
+	updateUpcoming: (fetchers_list_update_cb) => {
+		let upcoming = [];
 
 		contest_end_handlers.forEach((h) => { if (h) h.cancel(); });
 		contest_end_handlers.length = 0;
 
-		cfAPI.call_cf_api('contest.list', null, 1).on('end', (parsedData) => {
+		cfAPI.call_cf_api('contest.list', null, 1).once('end', (parsedData) => {
 			try {
 				upcoming.length = 0;
 				parsedData.forEach( (el) => {
@@ -141,12 +140,10 @@ module.exports = {
 
 				upcoming.sort( (a, b) => { return a.time - b.time; });
 
-				emitter.emit('end');
+				fetchers_list_update_cb(upcoming);
 			} catch (e) {
 				logger.error('Parse Failed Codeforces\n' + e.message);
 			}
 		});
-
-		return emitter;
 	}
 };

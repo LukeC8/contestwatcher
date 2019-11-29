@@ -1,12 +1,11 @@
 const logger = require('../logger');
 const jsdom = require('jsdom')
-const EventEmitter = require('events');
 const moment = require('moment-timezone');
 
 module.exports = {
     name: "RPC",
-    updateUpcoming: (upcoming) => {
-        const emitter = new EventEmitter();
+    updateUpcoming: (fetchers_list_update_cb) => {
+        let upcoming = [];
 
         jsdom.env("http://registro.redprogramacioncompetitiva.com/contests",
             ["http://code.jquery.com/jquery.js"],
@@ -18,10 +17,10 @@ module.exports = {
 
                 const $ = window.$;
                 const list = $("table:eq(0)").children('tbody').children('tr');
-		let ok = false;
+                let ok = false;
 
                 list.each(function() {
-                    
+
                     const row = $(this).children('td');
                     const name = row.eq(0).text();
                     const time = row.eq(1).find('time').attr("datetime");
@@ -38,10 +37,8 @@ module.exports = {
 
                 });
 
-                emitter.emit('end');
+                fetchers_list_update_cb(upcoming);
             });
-
-        return emitter;
     }
 }
 

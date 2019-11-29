@@ -1,11 +1,10 @@
 const logger = require('../logger');
 const https = require('https');
-const EventEmitter = require('events');
 
 module.exports = {
 	name: "csacademy",
-	updateUpcoming: (upcoming) => {
-		const emitter = new EventEmitter();
+	updateUpcoming: (fetchers_list_update_cb) => {
+		let upcoming = [];
 
 		const options = {
 			hostname: 'csacademy.com',
@@ -56,7 +55,7 @@ module.exports = {
 
 					upcoming.sort( (a,b) => { return a.time - b.time; });
 
-					emitter.emit('end');
+					fetchers_list_update_cb(upcoming);
 				} catch (e) {
 					logger.error('Parse Failed CSAcademy\n' + e.message);
 				}
@@ -64,7 +63,5 @@ module.exports = {
 		}).on('error', (e) => {
 			logger.error('Request Error CSAcademy\n' + e.message);
 		});
-
-		return emitter;
 	}
 };

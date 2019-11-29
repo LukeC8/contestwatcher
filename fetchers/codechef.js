@@ -1,12 +1,11 @@
 const logger = require('../logger');
 const jsdom = require('jsdom')
-const EventEmitter = require('events');
 const moment = require('moment-timezone');
 
 module.exports = {
 	name: "codechef",
-	updateUpcoming: (upcoming) => {
-		const emitter = new EventEmitter();
+	updateUpcoming: (fetchers_list_update_cb) => {
+		let upcoming = [];
 
 		jsdom.env("https://www.codechef.com/contests",
 			["http://code.jquery.com/jquery.js"],
@@ -42,9 +41,7 @@ module.exports = {
 					}
 				});
 
-				emitter.emit('end');
+				fetchers_list_update_cb(upcoming);
 			});
-
-		return emitter;
 	}
 }

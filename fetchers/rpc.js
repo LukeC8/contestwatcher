@@ -5,7 +5,6 @@ const moment = require('moment-timezone');
 module.exports = {
     name: "RPC",
     updateUpcoming: (fetchers_list_update_cb) => {
-        let upcoming = [];
 
         jsdom.env("http://registro.redprogramacioncompetitiva.com/contests",
             ["http://code.jquery.com/jquery.js"],
@@ -15,9 +14,10 @@ module.exports = {
                     return;
                 }
 
-                const $ = window.$;
+                const $ = window.jQuery.noConflict();
                 const list = $("table:eq(0)").children('tbody').children('tr');
                 let ok = false;
+				let upcoming = [];
 
                 list.each(function() {
 

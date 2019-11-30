@@ -4,13 +4,12 @@ const ical = require('ical');
 module.exports = {
 	name: "topcoder",
 	updateUpcoming: (fetchers_list_update_cb) => {
-		let upcoming = [];
 
 		ical.fromURL(
 			'https://calendar.google.com/calendar/ical/appirio.com_bhga3musitat85mhdrng9035jg%40group.calendar.google.com/public/basic.ics', 
 			{},
 			(err, data) => {
-				upcoming.length = 0;
+				let upcoming = [];
 
 				for (var key in data) {
 					if (!data.hasOwnProperty(key))

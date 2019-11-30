@@ -5,7 +5,6 @@ const moment = require('moment-timezone');
 module.exports = {
 	name: "codechef",
 	updateUpcoming: (fetchers_list_update_cb) => {
-		let upcoming = [];
 
 		jsdom.env("https://www.codechef.com/contests",
 			["http://code.jquery.com/jquery.js"],
@@ -14,9 +13,9 @@ module.exports = {
 					logger.error("Failed on CodeChef.", err);
 					return;
 				}
-				const $ = window.$
+				const $ = window.jQuery.noConflict();
 				const list = $("table.dataTable:eq(0),table.dataTable:eq(1)").children('tbody').children()
-				upcoming.length = 0;
+				let upcoming = [];
 				list.find('a').each((i, x) => {
 					if ((/Challenge|Cook|Lunchtime/i.test(x.text) && /January|February|March|April|May|June|July|August|September|October|November|December/i.test(x.text)) || /Snackdown/i.test(x.text)) {
 						const contest = list.eq(i).children(); // contest to be added

@@ -19,7 +19,6 @@ function valid(duration){
 module.exports = {
 	name: "atcoder",
 	updateUpcoming: (fetchers_list_update_cb) => {
-		let upcoming = [];
 
 		jsdom.env("https://atcoder.jp/contests",
 			["http://code.jquery.com/jquery.js"],
@@ -28,8 +27,8 @@ module.exports = {
 					logger.error("Failed on AtCoder.", err);
 					return;
 				}
-				upcoming.length = 0;
-				const $ = window.$;
+				let upcoming = [];
+				const $ = window.jQuery.noConflict();
 
 				/* There's no specific classes or ids for the tables.
 					We gather information of the table 3 if there is no active contests, otherwise
@@ -37,7 +36,7 @@ module.exports = {
 				*/
 
 				//check if there is the active contests table
-				const isActiveContest = $("table").size() == 4;
+				const isActiveContest = $("table").length == 4;
 				const tableToCheck = 1 + isActiveContest;
 
 				var contests = $(`table:eq(${tableToCheck})`).children('tbody').children('tr');

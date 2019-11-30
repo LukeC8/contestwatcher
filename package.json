@@ -36,7 +36,7 @@
     "lowdb": "^0.16.1",
     "moment-timezone": "^0.5.11",
     "node-schedule": "^1.2.0",
-    "node-telegram-bot-api": "^0.30.0",
+    "node-telegram-bot-api": "^0.40.0",
     "true-html-escape": "^1.0.0",
     "winston": "^2.4.0"
   }

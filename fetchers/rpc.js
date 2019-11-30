@@ -1,44 +1,42 @@
 const logger = require('../logger');
-const jsdom = require('jsdom')
+const { JSDOM } = require('jsdom');
+const jQuery = require('jquery');
 const moment = require('moment-timezone');
 
 module.exports = {
     name: "RPC",
     updateUpcoming: (fetchers_list_update_cb) => {
         let upcoming = [];
+        let error = undefined;
 
-        jsdom.env("http://registro.redprogramacioncompetitiva.com/contests",
-            ["http://code.jquery.com/jquery.js"],
-            (err, window) => {
-                if (err) {
-                    logger.error("Failed on RPC.", err);
-                    return;
+        JSDOM.fromURL('http://registro.redprogramacioncompetitiva.com/contests').then(dom => {
+            const $ = new jQuery(dom.window);
+            const list = $("table:eq(0)").children('tbody').children('tr');
+            let ok = false;
+
+            list.each(function() {
+
+                const row = $(this).children('td');
+                const name = row.eq(0).text();
+                const time = row.eq(1).find('time').attr("datetime");
+
+                contest = {
+                    judge: 'RPC',
+                    name: name,
+                    url: "http://registro.redprogramacioncompetitiva.com/contests",
+                    time: moment.tz(time, 'YYYY-MM-DDTHH:mm:ssZ', 'UTC').toDate(),
+                    duration: 5*3600
                 }
 
-                const $ = window.$;
-                const list = $("table:eq(0)").children('tbody').children('tr');
-                let ok = false;
+                upcoming.push(contest);
 
-                list.each(function() {
-
-                    const row = $(this).children('td');
-                    const name = row.eq(0).text();
-                    const time = row.eq(1).find('time').attr("datetime");
-
-                    contest = {
-                        judge: 'RPC',
-                        name: name,
-                        url: "http://registro.redprogramacioncompetitiva.com/contests",
-                        time: moment.tz(time, 'YYYY-MM-DDTHH:mm:ssZ', 'UTC').toDate(),
-                        duration: 5*3600
-                    }
-
-                    upcoming.push(contest);
-
-                });
-
-                fetchers_list_update_cb(upcoming);
             });
+
+        }).catch(err => {
+            error = err;
+        }).finally(() => {
+            fetchers_list_update_cb(upcoming, error);
+        });
     }
 }
 

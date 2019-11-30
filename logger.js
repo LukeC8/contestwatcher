@@ -32,7 +32,7 @@ winston.add(winston.transports.Console, {
 	json: false,
 	colorize: true,
 	formatter: getFormatter,
-	handleExceptions: true,
+	handleExceptions: false,
 	humanReadableUnhandledException: true
 });
 
@@ -46,7 +46,7 @@ winston.add(winston.transports.File, {
 	maxFiles: 5,
 	tailable: true,
 	zippedArchive: true,
-	handleExceptions: true,
+	handleExceptions: false,
 	humanReadableUnhandledException: true
 });
 

@@ -41,10 +41,10 @@ Bot.create_bot = function() {
 Bot.sendMessage = function(chatId, text, options) {
 	let promise = Bot.bot.sendMessage(chatId, text, options);
 	promise.catch((error) => {
-		logger.error("Error while sending message: " + error.code + "\n" + JSON.stringify(error.response.body));
+		logger.error("Error while sending message: " + error.code + "\n" + JSON.stringify(error));
 		logger.error("Original message: " + text);
 		logger.error("Options: " + JSON.stringify(options));
-		const err = error.response.body.error_code;
+		const err = error.code;
 		// if the bot has been "banned" by this chat
 		if (err === 400 || err === 403)
 			invalid_users.add(chatId);
